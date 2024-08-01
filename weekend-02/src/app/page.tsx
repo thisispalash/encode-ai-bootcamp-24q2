@@ -57,10 +57,10 @@ export default function Home() {
 
         <form onSubmit={handleSubmit} className="p-2 w-4/5 mx-auto">
 
-          <div className="flex">
+          <div className="flex p-4">
             <select 
               name="category"
-              className="p-2"
+              className="p-2 text-center w-1/5 text-md text-slate-900 bg-slate-100 border border-slate-300 rounded-l-lg cursor-pointer hover:bg-slate-200 focus:outline-none"
             >
               {categories.map((category, index) => (
                 <option key={index} value={category}>{category}</option>
@@ -72,12 +72,16 @@ export default function Home() {
               <input 
                 name="topic" 
                 type="text" 
-                className="p-2 w-full" 
+                className="absolute left-0 p-2 w-4/5 text-slate-900 focus:outline-none" 
                 maxLength={200} 
                 placeholder="Joke Topic.. (eg, cats)" 
               />
 
-              <button type="submit" disabled={isLoading} className="absolute right-0 top-0 p-2">
+              <button 
+                type="submit" 
+                disabled={isLoading} 
+                className="absolute right-0 top-0 p-2 w-1/5 bg-slate-900 text-slate-100 rounded-r-lg hover:bg-slate-800 focus:outline-none"
+              >
                 Generate
               </button>
 
