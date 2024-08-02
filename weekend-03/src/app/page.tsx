@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import Spinner from '@/components/Spinner';
@@ -54,6 +54,17 @@ export default function Home() {
       return;
     }
     console.log(theme, prompt);
+
+    const response = await fetch('/api/describe', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ theme, prompt })
+    });
+    const data = await response.json();
+
+    setDescription(data.description);
     setIsLoading(false);
     setAiResponded(true);
   }
@@ -64,6 +75,9 @@ export default function Home() {
     setIsGenerating(false);
   }
 
+  useEffect(() => {
+    fetch('/api/describe', { method: 'GET' });
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -111,7 +125,7 @@ export default function Home() {
         </div>
 
         {/* Painting Description (or message to user) */}
-        <div className="p-8 m-auto text-center w-full border border-slate-100 rounded-lg">
+        <div className="p-8 m-auto text-justify w-full border border-slate-100 rounded-lg">
           {isLoading && <Spinner />}
           {description && <p>{description}</p>}
         </div>
