@@ -3,6 +3,10 @@
 
 This is the weekend project for the first week of Encode Club AI Bootcamp 2024q2. It demonstrates the use of OpenAI's API to create a chef assistant to suggest dishes, provide a recipe, or critique a recipe.
 
+### Screen Recording
+
+![screen-recording](./chefgpt-screen-recording.mov)
+
 ## Usage Instructions
 
 > Getting OpenAI access
