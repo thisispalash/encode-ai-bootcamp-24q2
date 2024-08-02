@@ -71,7 +71,21 @@ export default function Home() {
 
   const generateImage = async () => {
     setIsGenerating(true);
-    console.log(imageParams);
+    const body = {
+      prompt: description,
+      ...imageParams
+    }
+
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    console.log(data);
+    setAiImage(data.image);
     setIsGenerating(false);
   }
 
@@ -144,9 +158,10 @@ export default function Home() {
                 onChange={(e) => setImageParams({...imageParams, size: e.target.value})}
                 className="rounded-lg text-slate-900 bg-slate-100 p-2 w-1/6 border border-slate-300 cursor-pointer hover:bg-slate-200 focus:outline-none"
               >
-                <option value="256">256 x 256</option>
-                <option value="512">512 x 512</option>
-                <option value="1024">1024 x 1024</option>
+                <option value="">Select Image Size</option>
+                <option value="1024x1024">1024 x 1024</option>
+                <option value="1792x1024">1792 x 1024</option>
+                <option value="1024x1792">1024 x 1792</option>
               </select>
 
               <select
@@ -156,9 +171,9 @@ export default function Home() {
                 onChange={(e) => setImageParams({...imageParams, style: e.target.value})}
                 className="rounded-lg text-slate-900 bg-slate-100 p-2 w-1/6 border border-slate-300 cursor-pointer hover:bg-slate-200 focus:outline-none"
               >
+                <option value="">Select Image Style</option>
                 <option value="natural">Natural</option>
                 <option value="vivid">Vivid</option>
-                <option value="pastel">Pastel</option>
               </select>
 
               <select
@@ -166,9 +181,10 @@ export default function Home() {
                 value={imageParams.quality}
                 disabled={isGenerating}
                 onChange={(e) => setImageParams({...imageParams, quality: e.target.value})}
-                className="rounded-lg text-slate-900 bg-slate-100 p-2 w-1/6 border border-slate-300 cursor-pointer hover:bg-slate-200 focus:outline-none"
+                className="rounded-lg text-slate-900 bg-slate-100 p-2 w-1/6 border border-slate-300 cursor-pointer enabled:hover:bg-slate-200 focus:outline-none"
               >
-                <option value="sd">Standard</option>
+                <option value="">Select Image Quality</option>  
+                <option value="standard">Standard</option>
                 <option value="hd">High Definition</option>
               </select>
 
@@ -182,10 +198,13 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="p-8 m-auto w-full">
-              {isGenerating && <Spinner />}
-              {aiImage && <Image src={aiImage} alt="Generated Painting" />}
-            </div>
+            {(aiImage || isGenerating) && (
+              <div className="p-8 m-auto w-full flex items-center">
+                {isGenerating && <Spinner />}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {!isGenerating && <img src={aiImage} alt="Generated Painting" className="m-auto border border-slate-100 rounded-lg" />}
+              </div>
+            )}
 
           </div>
 
